@@ -14,6 +14,8 @@ pygame.display.set_caption('Snake')
 
 # define game variables
 cell_size = 10
+# 1 is up, 2 is right, 3 is down, and 4 is left
+direction = 1
 
 # create snake
 snake_pos = [[int(screen_width / 2), int(screen_height / 2)],
@@ -41,6 +43,16 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP and direction != 3:
+                direction = 1
+            if event.key == pygame.K_RIGHT and direction != 4:
+                direction = 2
+            if event.key == pygame.K_DOWN and direction != 1:
+                direction = 3
+            if event.key == pygame.K_LEFT and direction != 2:
+                direction = 4
+
 
     # draw snake
     head = 1
