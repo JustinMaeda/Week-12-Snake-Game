@@ -12,6 +12,11 @@ screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Snake')
 
+#define background colors
+bg = (255, 200, 150)
+
+def draw_screen():
+    screen.fill(bg)
 
 #setup loop with exit
 run = True
