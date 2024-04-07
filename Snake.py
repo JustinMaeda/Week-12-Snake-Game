@@ -1,6 +1,8 @@
 # import modules
 import pygame
 
+from pygame.locals import *
+
 
 import random
 
@@ -23,7 +25,8 @@ food = [0, 0]
 new_food = True
 new_piece = [0, 0]
 score = 0
-
+game_over = False
+clicked = False
 
 # create snake
 snake_pos = [[int(screen_width / 2), int(screen_height / 2)],
@@ -43,6 +46,8 @@ snake_head = (255, 0, 0)
 food_col = (200, 50, 50)
 score_col = (0, 0, 255)
 
+#setup for play again
+again_rect = Rect(screen_width // 2 - 80, screen_height // 2, 160, 50)
 def draw_screen():
     screen.fill(bg)
 
@@ -51,6 +56,34 @@ def draw_score():
     score_txt = 'Score:' + str(score)
     score_img = font.render(score_txt, True, score_col)
     screen.blit(score_img, (0, 0))
+
+
+def check_game_over(game_over):
+
+    # first check
+    head_count = 0
+    for segment in snake_pos:
+        if snake_pos[0] == segment and head_count > 0:
+            game_over = True
+        head_count += 1
+
+    #check if snake has gone out of bounds
+    if snake_pos[0][0] < 0 or snake_pos[0][0] > screen_width or snake_pos[0][1] < 0 or snake_pos[0][1] > screen_height:
+        game_over = True
+
+    return game_over
+
+
+def draw_game_over():
+    over_txt = 'Game Over!'
+    over_img = font.render(over_txt, True, snake_head)
+    pygame.draw.rect(screen, score_col, (screen_width // 2 - 80, screen_height // 2 - 60, 160, 50))
+    screen.blit(over_img, (screen_width // 2 - 80, screen_height // 2 - 50))
+
+    again_txt = 'Play Again?'
+    again_img = font.render(again_txt, True, snake_head)
+    pygame.draw.rect(screen, score_col, again_rect)
+    screen.blit(again_img, (screen_width // 2 - 80, screen_height // 2 +10))
 
 
 # setup loop with exit
@@ -108,23 +141,49 @@ while run:
         #increase score
         score += 1
 
-    if update_snake > 99:
-        update_snake = 0
+    if game_over == False:
+        if update_snake > 99:
+            update_snake = 0
 
-        snake_pos = snake_pos[-1:] + snake_pos[:-1]
-        # upward
-        if direction == 1:
-            snake_pos[0][0] = snake_pos[1][0]
-            snake_pos[0][1] = snake_pos[1][1] - cell_size
-        if direction == 2:
-            snake_pos[0][1] = snake_pos[1][1]
-            snake_pos[0][0] = snake_pos[1][0] + cell_size
-        if direction == 3:
-            snake_pos[0][0] = snake_pos[1][0]
-            snake_pos[0][1] = snake_pos[1][1] + cell_size
-        if direction == 4:
-            snake_pos[0][1] = snake_pos[1][1]
-            snake_pos[0][0] = snake_pos[1][0] - cell_size
+            snake_pos = snake_pos[-1:] + snake_pos[:-1]
+            # upward
+            if direction == 1:
+                snake_pos[0][0] = snake_pos[1][0]
+                snake_pos[0][1] = snake_pos[1][1] - cell_size
+            if direction == 2:
+                snake_pos[0][1] = snake_pos[1][1]
+                snake_pos[0][0] = snake_pos[1][0] + cell_size
+            if direction == 3:
+                snake_pos[0][0] = snake_pos[1][0]
+                snake_pos[0][1] = snake_pos[1][1] + cell_size
+            if direction == 4:
+                snake_pos[0][1] = snake_pos[1][1]
+                snake_pos[0][0] = snake_pos[1][0] - cell_size
+            game_over = check_game_over(game_over)
+
+
+    if game_over == True:
+        draw_game_over()
+        if event.type == pygame.MOUSEBUTTONDOWN and clicked == False:
+            clicked = True
+        if event.type == pygame.MOUSEBUTTONUP and clicked == True:
+            clicked = False
+            pos = pygame.mouse.get_pos()
+            if again_rect.collidepoint(pos):
+                # reset variables
+                cell_size = 10
+                direction = 1  # 1 is up, 2 is right, 3 is down, and 4 is left
+                update_snake = 0
+                food = [0, 0]
+                new_food = True
+                new_piece = [0, 0]
+                score = 0
+                game_over = False
+
+                snake_pos = [[int(screen_width / 2), int(screen_height / 2)],
+                             [int(screen_width / 2), int(screen_height / 2) + cell_size],
+                             [int(screen_width / 2), int(screen_height / 2) + cell_size * 2],
+                             [int(screen_width / 2), int(screen_height / 2) + cell_size * 3]]
 
     # draw snake
     head = 1
