@@ -74,6 +74,25 @@ while run:
     #draw food
     pygame.draw.rect(screen, food_col, (food[0], food[1], cell_size, cell_size))
 
+
+    # check if food has been eaten
+    if snake_pos[0] == food:
+        new_food = True
+        #create new snake segment
+        new_piece = list(snake_pos[-1])
+        if direction == 1:
+            new_piece[1] += cell_size
+        if direction == 2:
+            new_piece[0] -= cell_size
+        if direction == 3:
+            new_piece[1] -= cell_size
+        if direction == 4:
+            new_piece[0] += cell_size
+
+        #attach new segment
+        snake_pos.append(new_piece)
+
+
     if update_snake > 99:
         update_snake = 0
 
