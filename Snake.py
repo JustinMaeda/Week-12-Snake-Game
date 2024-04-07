@@ -16,6 +16,7 @@ pygame.display.set_caption('Snake')
 cell_size = 10
 # 1 is up, 2 is right, 3 is down, and 4 is left
 direction = 1
+update_snake = 0
 
 # create snake
 snake_pos = [[int(screen_width / 2), int(screen_height / 2)],
@@ -53,6 +54,25 @@ while run:
             if event.key == pygame.K_LEFT and direction != 2:
                 direction = 4
 
+    if update_snake > 99:
+        update_snake = 0
+
+        snake_pos = snake_pos[-1:] + snake_pos[:-1]
+        # upward
+        if direction == 1:
+            snake_pos[0][0] = snake_pos[1][0]
+            snake_pos[0][1] = snake_pos[1][1] - cell_size
+        if direction == 2:
+            snake_pos[0][1] = snake_pos[1][1]
+            snake_pos[0][0] = snake_pos[1][0] + cell_size
+        if direction == 3:
+            snake_pos[0][0] = snake_pos[1][0]
+            snake_pos[0][1] = snake_pos[1][1] + cell_size
+        if direction == 4:
+            snake_pos[0][1] = snake_pos[1][1]
+            snake_pos[0][0] = snake_pos[1][0] - cell_size
+
+
 
     # draw snake
     head = 1
@@ -67,6 +87,8 @@ while run:
 
     # update display
     pygame.display.update()
+
+    update_snake += 1
 
 # end game
 pygame.quit()
