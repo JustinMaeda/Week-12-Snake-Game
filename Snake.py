@@ -3,20 +3,27 @@ import pygame
 
 from pygame.locals import *
 
+from pygame import mixer
 
 import random
 
 
 pygame.init()
+mixer.init()
 
 # create blank game window
 screen_width = 600
 screen_height = 600
 
-
 # create game window
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption('Snake')
+pygame.display.set_caption('Gameboy Snake')
+
+mixer.music.load("Mushroom's Life.mp3")
+
+mixer.music.set_volume(0.5)
+
+pygame.mixer.music.play(999, (0.0))
 
 # define game variables
 cell_size = 10
@@ -28,7 +35,6 @@ new_piece = [0, 0]
 score = 0
 game_over = False
 clicked = False
-background = pygame.image.load("gameboy_img.png").convert_alpha()
 
 # create snake
 snake_pos = [[int(screen_width / 2), int(screen_height / 2)],
@@ -38,25 +44,26 @@ snake_pos = [[int(screen_width / 2), int(screen_height / 2)],
 
 
 # declare font
-font = pygame.font.SysFont(None, 40)
+font = pygame.font.Font("Early GameBoy.ttf", 20)
 
 # define background colors
-bg = (255, 200, 150)
-body_inner = (50, 175, 25)
-body_outer = (100, 100, 200)
-snake_head = (255, 0, 0)
+bg = (155, 188, 15)
+body_inner = (48, 98, 48)
+body_outer = (13, 12, 12)
+snake_head = (15, 56, 15)
 food_col = (200, 50, 50)
-score_col = (0, 0, 255)
+score_col = (139, 172, 15)
 
 #setup for play again
-again_rect = Rect(screen_width // 2 - 80, screen_height // 2, 160, 50)
+again_rect = Rect(screen_width // 2 - 100, screen_height // 2, 225, 50)
+
+
 def draw_screen():
     screen.fill(bg)
-    screen.blit(background)
 
 def draw_score():
     score_txt = 'Score:' + str(score)
-    score_img = font.render(score_txt, True, score_col)
+    score_img = font.render(score_txt, True, snake_head)
     screen.blit(score_img, (0, 0))
 
 
@@ -79,13 +86,13 @@ def check_game_over(game_over):
 def draw_game_over():
     over_txt = 'Game Over!'
     over_img = font.render(over_txt, True, snake_head)
-    pygame.draw.rect(screen, score_col, (screen_width // 2 - 80, screen_height // 2 - 60, 160, 50))
+    pygame.draw.rect(screen, score_col, (screen_width // 2 - 100, screen_height // 2 - 60, 225, 50))
     screen.blit(over_img, (screen_width // 2 - 80, screen_height // 2 - 50))
 
-    again_txt = 'Play Again?'
+    again_txt = 'Once More?'
     again_img = font.render(again_txt, True, snake_head)
     pygame.draw.rect(screen, score_col, again_rect)
-    screen.blit(again_img, (screen_width // 2 - 80, screen_height // 2 +10))
+    screen.blit(again_img, (screen_width // 2 - 80, screen_height // 2 + 10))
 
 
 # setup loop with exit
@@ -94,6 +101,8 @@ while run:
 
     draw_screen()
     draw_score()
+
+
 
     # iterate
     for event in pygame.event.get():
