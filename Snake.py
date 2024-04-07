@@ -22,6 +22,7 @@ update_snake = 0
 food = [0, 0]
 new_food = True
 new_piece = [0, 0]
+score = 0
 
 
 # create snake
@@ -30,15 +31,26 @@ snake_pos = [[int(screen_width / 2), int(screen_height / 2)],
              [int(screen_width / 2), int(screen_height / 2) + cell_size * 2],
              [int(screen_width / 2), int(screen_height / 2) + cell_size * 3]]
 
+
+# declare font
+font = pygame.font.SysFont(None, 40)
+
 # define background colors
 bg = (255, 200, 150)
 body_inner = (50, 175, 25)
 body_outer = (100, 100, 200)
 snake_head = (255, 0, 0)
-food_col = [200, 50, 50]
+food_col = (200, 50, 50)
+score_col = (0, 0, 255)
 
 def draw_screen():
     screen.fill(bg)
+
+
+def draw_score():
+    score_txt = 'Score:' + str(score)
+    score_img = font.render(score_txt, True, score_col)
+    screen.blit(score_img, (0, 0))
 
 
 # setup loop with exit
@@ -46,6 +58,7 @@ run = True
 while run:
 
     draw_screen()
+    draw_score()
 
     # iterate
     for event in pygame.event.get():
@@ -92,6 +105,8 @@ while run:
         #attach new segment
         snake_pos.append(new_piece)
 
+        #increase score
+        score += 1
 
     if update_snake > 99:
         update_snake = 0
