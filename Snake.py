@@ -1,6 +1,5 @@
 # import modules
 import pygame
-from pygame.locals import *
 
 pygame.init()
 
@@ -29,6 +28,7 @@ bg = (255, 200, 150)
 body_inner = (50, 175, 25)
 body_outer = (100, 100, 200)
 snake_head = (255, 0, 0)
+
 
 def draw_screen():
     screen.fill(bg)
@@ -71,8 +71,6 @@ while run:
         if direction == 4:
             snake_pos[0][1] = snake_pos[1][1]
             snake_pos[0][0] = snake_pos[1][0] - cell_size
-
-
 
     # draw snake
     head = 1
