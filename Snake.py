@@ -26,7 +26,7 @@ mixer.music.set_volume(0.5)
 pygame.mixer.music.play(999, (0.0))
 
 # define game variables
-cell_size = 10
+cell_size = 20
 direction = 1 # 1 is up, 2 is right, 3 is down, and 4 is left
 update_snake = 0
 food = [0, 0]
@@ -129,7 +129,8 @@ while run:
 
 
     #draw food
-    pygame.draw.rect(screen, food_col, (food[0], food[1], cell_size, cell_size))
+    food_img = pygame.image.load("Apple1.png").convert_alpha()
+    screen.blit(food_img,(food[0],food[1]))
 
 
     # check if food has been eaten
@@ -182,7 +183,7 @@ while run:
             pos = pygame.mouse.get_pos()
             if again_rect.collidepoint(pos):
                 # reset variables
-                cell_size = 10
+                cell_size = 20
                 direction = 1  # 1 is up, 2 is right, 3 is down, and 4 is left
                 update_snake = 0
                 food = [0, 0]
