@@ -13,6 +13,7 @@ pygame.init()
 screen_width = 600
 screen_height = 600
 
+
 # create game window
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Snake')
@@ -27,6 +28,7 @@ new_piece = [0, 0]
 score = 0
 game_over = False
 clicked = False
+background = pygame.image.load("gameboy_img.png").convert_alpha()
 
 # create snake
 snake_pos = [[int(screen_width / 2), int(screen_height / 2)],
@@ -50,7 +52,7 @@ score_col = (0, 0, 255)
 again_rect = Rect(screen_width // 2 - 80, screen_height // 2, 160, 50)
 def draw_screen():
     screen.fill(bg)
-
+    screen.blit(background)
 
 def draw_score():
     score_txt = 'Score:' + str(score)
